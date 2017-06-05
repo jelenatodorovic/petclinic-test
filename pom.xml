@@ -7,6 +7,7 @@
   <properties>
   	 <selenium.version>3.4.0</selenium.version>
   	 <cucumber.version>1.2.5</cucumber.version>
+  	 <spring.version>4.3.2.RELEASE</spring.version>
   </properties>
   
   <dependencies>
@@ -28,6 +29,17 @@
 		<artifactId>cucumber-junit</artifactId>
 		<version>${cucumber.version}</version>
 	</dependency>
-	
+
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
   </dependencies>
 </project>

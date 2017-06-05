@@ -7,7 +7,6 @@ public class HomePage extends Page {
 
 	public HomePage(WebDriver driver) {
 		super(driver);
-		PageFactory.initElements(driver, HomePage.class);
 		// TODO Auto-generated constructor stub
 	}
 
