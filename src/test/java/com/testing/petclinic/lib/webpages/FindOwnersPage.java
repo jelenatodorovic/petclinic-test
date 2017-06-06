@@ -2,17 +2,24 @@ package com.testing.petclinic.lib.webpages;
 
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Duration;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Sleeper;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.gargoylesoftware.htmlunit.javascript.background.JavaScriptExecutor;
 
 public class FindOwnersPage extends Page{
 
-	@FindBy(id = "lastName")
+	@FindBy(xpath = "id('lastName')//input")
 	private WebElement lastnameInput;
 	
 	@FindBy(xpath = "id('search-owner-form')/div[2]/div/button")
@@ -39,13 +46,9 @@ public class FindOwnersPage extends Page{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Actions actions = new Actions(pDriver);
-		actions.moveToElement(lastnameInput);
-		actions.click();
-		//lastnameInput.click();
-		System.out.println(lastnameInput.isSelected());
+
 		sendKeysLastnameInput(lastname);
-		actions.build().perform();
+	
 		return clickOnFindOwnerButton();
 	}
 	public void searchNonExistingOwner(String s) {

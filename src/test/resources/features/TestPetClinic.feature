@@ -12,8 +12,8 @@ And New pet is in the owners list
 And New visit is in the visits list
 
 Examples:
-|firstname|lastname|address |city    |telephone|petname|birthdate  |description  |
-|Mary     |lho     |road 	  |London  |07548972 | Suzi  |2017/01/01 |description1 |
+|firstname|lastname   |address  |city    |telephone|petname|birthdate  |description  |
+|Mary     |Todorov7   |road 	  |London  |07548972 | Suzi  |2017/01/01 |description1 |
 
 
 

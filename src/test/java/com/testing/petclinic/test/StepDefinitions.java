@@ -14,8 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 
-
 import com.testing.petclinic.lib.config.ConfigVariables;
+import com.testing.petclinic.lib.config.TestConfig;
 import com.testing.petclinic.lib.model.Owner;
 import com.testing.petclinic.lib.model.Pet;
 import com.testing.petclinic.lib.utilities.Driver;
@@ -34,20 +34,22 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-@ContextConfiguration(classes={ ConfigVariables.class })
+@ContextConfiguration(classes={ ConfigVariables.class, TestConfig.class })
 public class StepDefinitions {
 
 	WebDriver driver;
 
 	String browser;
 
-	String url;// = "localhost:8080";
+	String url;
 
 	Owner newOwner;
 	Pet pet;
 	String visitDescription;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
+	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-mm-dd");
+
 
 	private HomePage homePage;
 	private FindOwnersPage findOwnersPage;
@@ -60,11 +62,14 @@ public class StepDefinitions {
 	@Autowired
 	ConfigVariables configVariables;
 	
+	@Autowired
+	TestConfig testConfig;
 	@Before
 	public void setUp() {
 		
 		url = configVariables.getUrl();
-		driver = Driver.openBrowser("ie");
+		browser = configVariables.getBrowser();
+		driver = testConfig.getDriver().openBrowser(browser);
 		driver.get(url);
 
 	}
@@ -72,7 +77,7 @@ public class StepDefinitions {
 	@Given("^I have a new owner (.+) (.+) (.+) (.+) (\\d+)$")
 	public void i_have_a_new_owner(String firstname, String lastname,
 			String address, String city, String telephone) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+	
 		newOwner = new Owner(firstname, lastname, address, city, telephone);
 
 	}
@@ -96,8 +101,7 @@ public class StepDefinitions {
 	}
 
 	@When("^I add new owner$")
-	public void i_add_new_owner() throws Throwable {
-		
+	public void i_add_new_owner() throws Throwable {		
 		HomePage homePage = new HomePage(driver);
 		Sleeper.SYSTEM_SLEEPER.sleep(new Duration(3, TimeUnit.SECONDS));
 		findOwnersPage = homePage.openFindOwnersPage();
@@ -131,31 +135,35 @@ public class StepDefinitions {
 		findOwnersPage = ownerInformationPage.openFindOwnersPage();
 		ownerInformationPage = findOwnersPage.searchOneOwner(newOwner.getLastname());
 		
-		ArrayList<String> list = ownerInformationPage.getOwnerInformation();
-		Assert.assertEquals("Name should be equal", list.get(0), newOwner.getFirstname() + " "
-				+ newOwner.getLastname());
-		Assert.assertEquals("Address should be equal", list.get(1), newOwner.getAddress()
-				);
-		Assert.assertEquals("City should be equal", list.get(2), newOwner.getCity()
-				);
-		Assert.assertEquals("Telephone should be equal", list.get(3), newOwner.getTelephone()
-				);
+		Owner owner1 = ownerInformationPage.getOwnerInformation();
+		Assert.assertEquals("Name should be equal", newOwner.getFirstname() + " "
+				+ newOwner.getLastname(), owner1.getFirstname() + " "+owner1.getLastname());
+		Assert.assertEquals("Address should be equal", newOwner.getAddress(), 
+				owner1.getAddress());
+		Assert.assertEquals("City should be equal", newOwner.getCity(), 
+				owner1.getCity());
+		Assert.assertEquals("Telephone should be equal", newOwner.getTelephone(),
+				owner1.getTelephone());
 	}
 
 	@Then("^New pet is in the owners list$")
 	public void new_pet_is_in_the_owner_s_list() throws Throwable {
-		//ownerInformationPage.
+		Pet pet1 = ownerInformationPage.getPetInformation();
+		
+		Assert.assertEquals("Name should be equal", pet1.getName(), pet.getName());
+		Assert.assertEquals("Birth date should be equal", sdf1.format(pet1.getBirtDate()), sdf1.format(pet.getBirtDate()));
 	}
 
 	@Then("^New visit is in the visits list$")
 	public void new_visit_is_in_the_visits_list() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		String desc = ownerInformationPage.getFirstPetVisitDescription();
+		
+		Assert.assertEquals("Visist description should be equal", visitDescription, desc);
 	}
 	
 	@After
 	public void tearDown() {
-		//driver.quit();
+		driver.quit();
 	}
 
 }

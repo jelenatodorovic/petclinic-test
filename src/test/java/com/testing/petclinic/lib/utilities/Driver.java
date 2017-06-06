@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 import com.testing.petclinic.lib.config.ConfigVariables;
 
-//@Component
+@Component
 public class Driver {
 
 
-	public static WebDriver openBrowser(String browser) {
+	public WebDriver openBrowser(String browser) {
 	
 		WebDriver driver = null;
 		if(browser.equals("firefox")) {
