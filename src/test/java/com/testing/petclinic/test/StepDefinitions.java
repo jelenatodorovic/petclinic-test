@@ -5,19 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.http.conn.routing.RouteInfo.TunnelType;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Duration;
 import org.openqa.selenium.support.ui.Sleeper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+
 
 import com.testing.petclinic.lib.config.ConfigVariables;
 import com.testing.petclinic.lib.model.Owner;
@@ -38,6 +34,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+@ContextConfiguration(classes={ ConfigVariables.class })
 public class StepDefinitions {
 
 	WebDriver driver;
@@ -61,18 +58,18 @@ public class StepDefinitions {
 	private OwnersPage ownersPage;
 
 	@Autowired
-	private ConfigVariables configVariables;
-
+	ConfigVariables configVariables;
+	
 	@Before
 	public void setUp() {
-		url = "localhost:8080";
 		
-		driver = Driver.openBrowser("chrome");
+		url = configVariables.getUrl();
+		driver = Driver.openBrowser("ie");
 		driver.get(url);
 
 	}
 
-	@Given("^I have a new owner (.*) (.*) (.*) (.*) (\\d+)$")
+	@Given("^I have a new owner (.+) (.+) (.+) (.+) (\\d+)$")
 	public void i_have_a_new_owner(String firstname, String lastname,
 			String address, String city, String telephone) throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
@@ -83,7 +80,6 @@ public class StepDefinitions {
 	@Given("^Owner has a pet (.*) (.*)$")
 	public void owner_has_a_pet(String petname, String brithdate)
 			throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
 
 		Date date = sdf.parse(brithdate);
 
@@ -94,7 +90,7 @@ public class StepDefinitions {
 	@Given("^I have a (.*) about the visit$")
 	public void i_have_a_description_about_the_visit(String description)
 			throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+	
 		visitDescription = description;
 
 	}
@@ -131,12 +127,8 @@ public class StepDefinitions {
 
 	@Then("^New owner is in the list$")
 	public void new_owner_is_in_the_list() throws Throwable {
-		// homePage = new HomePage(driver);
-		// findOwnersPage = homePage.openFindOwnersPage();
 
 		findOwnersPage = ownerInformationPage.openFindOwnersPage();
-		//ownersPage = findOwnersPage.clickOnFindEmptyOwnerButton();
-//		ownerInformationPage = ownersPage.findOwner(newOwner.getFirstname(), newOwner.getLastname(), newOwner.getTelephone());
 		ownerInformationPage = findOwnersPage.searchOneOwner(newOwner.getLastname());
 		
 		ArrayList<String> list = ownerInformationPage.getOwnerInformation();
@@ -152,8 +144,7 @@ public class StepDefinitions {
 
 	@Then("^New pet is in the owners list$")
 	public void new_pet_is_in_the_owner_s_list() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		//ownerInformationPage.
 	}
 
 	@Then("^New visit is in the visits list$")
@@ -164,7 +155,7 @@ public class StepDefinitions {
 	
 	@After
 	public void tearDown() {
-		driver.quit();
+		//driver.quit();
 	}
 
 }

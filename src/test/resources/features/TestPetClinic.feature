@@ -13,6 +13,7 @@ And New visit is in the visits list
 
 Examples:
 |firstname|lastname|address |city    |telephone|petname|birthdate  |description  |
-|Mary     |lho     |road 	  | London | 07548972| Suzi  |2017/01/01 |description1 |
+|Mary     |lho     |road 	  |London  |07548972 | Suzi  |2017/01/01 |description1 |
+
 
 

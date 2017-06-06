@@ -5,7 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
+@PropertySource("classpath:config/application.properties")
 public class ConfigVariables {
 	
 	 @Value("${url}")

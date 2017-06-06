@@ -16,6 +16,9 @@ public class OwnerInformationPage extends Page{
 	@FindBy(xpath = "//table[contains(@class,'table-condensed')]//tbody//td[2]")
 	private WebElement addVisit;
 	
+	@FindBy(xpath = "//table[2]//tr[1]//td/dl/dd[1]")
+	private WebElement firstPetName;
+	
 	public OwnerInformationPage(WebDriver driver) {
 		super(driver);
 		// TODO Auto-generated constructor stub
