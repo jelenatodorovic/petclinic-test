@@ -9,8 +9,8 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features",
 	glue = "com.testing.petclinic.test",
-	plugin = {"pretty", "html:target/cucumber"}
+	plugin = {"pretty", "json:target/cucumber.json"}
 		)
-public class RunCukes {
+public class RunCukesTest {
 
 }
